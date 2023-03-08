@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>login Data</title>
+    <style>
+         h1 {
+	text-align: center;
+}
+
+form {
+	max-width: 400px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+label {
+	display: block;
+	margin: 10px 0;
+}
+
+input[type="text"], input[type="password"] {
+	padding: 10px;
+	margin: 10px 0;
+	border: none;
+	border-radius: 5px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+input[type="submit"] {
+	padding: 10px;
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	cursor: pointer;
+}
+
+    </style>
+</head>
+
+<body>
+    <h1>Login</h1>
+	<form>
+		<label for="username">Username:</label>
+		<input type="text" id="username" name="username" required>
+
+		<label for="password">Password:</label>
+		<input type="password" id="password" name="password" required>
+
+		<input type="submit" value="Submit">
+	</form>
+	<div id="userDataDiv" class="userDataDiv">
+		<p>Personal Info</p>
+	</div>
+  <!-- <p id="userDataDiv"></p> -->
+  <!-- <p id="userelse"></p>  -->
+	<div id="userelse"></div>
+    
+    <script>
+    
+        const form = document.querySelector('form');
+
+form.addEventListener('submit', (event) => {
+	event.preventDefault();
+    
+	const username = document.getElementById('username').value;
+    
+	const password = document.getElementById('password').value;
+
+	axios.get('https://sheetdb.io/api/v1/niqgowwro7cea/search?username=' + username + '&password=' + password)
+		.then((response) => {
+			if (response.data.length === 1) {
+				alert(username);
+                // window.location.href = "index.html";
+			} else {
+				alert('Incorrect username or password!');
+                
+			}
+		})
+		.catch((error) => {
+			console.log(error);
+			alert('An error occurred!');
+		});
+        fetch('https://sheetdb.io/api/v1/niqgowwro7cea/search?username='+username )
+				.then(response => response.json())
+				.then(data => {
+					if (data.length > 0) {
+						const user = data[0];
+						// Get the user data div element
+// Get the user data div element
+const userDataDiv = document.getElementById("userDataDiv");
+
+// Create the HTML code for the table using the user data
+const tableHtml = `
+  <table>
+     <tr>
+		<td>Personal Information</td><td>&nbsp;</td>
+    </tr>
+      <td>Name</td>
+      <td>${user.name}</td>
+    </tr>
+    <tr>
+      <td>Mobile</td>
+      <td>${user.mobile}</td>
+    </tr>
+    <tr>
+      <td>Father Name</td>
+      <td>${user.fathername}</td>
+    </tr>
+    <tr>
+      <td>Mother Name</td>
+      <td>${user.mothername}</td>
+    </tr>
+    <tr>
+      <td>Mail</td>
+      <td>${user.mail}</td>
+    </tr>
+    <tr>
+      <td>Pan No</td>
+      <td>${user.pan}</td>
+    </tr>
+    <tr>
+      <td>Aadhar No</td>
+      <td>${user.aadhar}</td>
+    </tr>
+    <tr>
+      <td>Date of birth</td>
+      <td>${user.dob}</td>
+    </tr>
+    <tr>
+      <td>Address</td>
+      <td>${user.address}</td>
+    </tr>
+	<tr>
+		<td>Professional Information</td><td>&nbsp;</td>
+    </tr>
+		<tr>
+      <td>Employee Id</td>
+      <td>${user.empid}</td>
+    </tr>
+	<tr>
+      <td>Official Mail</td>
+      <td>${user.officemail}</td>
+    </tr>
+	<tr>
+      <td>Designation</td>
+      <td>${user.designation}</td>
+    </tr>
+	<tr>
+      <td>Date of join</td>
+      <td>${user.Doj}</td>
+    </tr>
+	<tr>
+		<td>Emergency Contact</td><td>&nbsp;</td>
+    </tr>
+		<tr>
+      <td>Name</td>
+      <td>${user.ename}</td>
+    </tr>
+	<tr>
+      <td>Relation</td>
+      <td>${user.Relation}</td>
+    </tr>
+	<tr>
+      <td>Mobile No</td>
+      <td>${user.poimobile}</td>
+    </tr>
+
+  </table>
+`;
+
+// Set the innerHTML of the user data div element to the table HTML code
+userDataDiv.innerHTML = tableHtml;
+form.reset();
+// userDataDiv.appendChild(table);
+
+					} else {
+						userelse.innerHTML = "User not found.";
+					}
+				})
+				.catch(error => {
+					console.error(error);
+					userDataDiv.innerHTML = "Error occurred while fetching user data.";
+				});
+		
+});
+
+
+            
+        </script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+</html>
